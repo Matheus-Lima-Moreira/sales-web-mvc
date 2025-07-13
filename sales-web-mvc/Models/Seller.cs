@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace sales_web_mvc.Models;
 
@@ -26,6 +27,7 @@ public class Seller
   [DataType(DataType.Date)]
   public DateTime BirthDate { get; set; }
 
+  [ValidateNever]
   public Department Department { get; set; } = null!;
 
   [Display(Name = "Department")]

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using sales_web_mvc.Models;
 using sales_web_mvc.Models.ViewModels;
@@ -48,13 +49,13 @@ public class SellersController : Controller
   {
     if (id == null)
     {
-      return NotFound();
+      return RedirectToAction(nameof(Error), new { message = "Id not provided" });
     }
 
     var seller = _sellerService.FindById(id.Value);
     if (seller == null)
     {
-      return NotFound();
+      return RedirectToAction(nameof(Error), new { message = "Id not found" });
     }
 
     return View(seller);
@@ -72,13 +73,13 @@ public class SellersController : Controller
   {
     if (id == null)
     {
-      return NotFound();
+      return RedirectToAction(nameof(Error), new { message = "Id not provided" });
     }
 
     var seller = _sellerService.FindById(id.Value);
     if (seller == null)
     {
-      return NotFound();
+      return RedirectToAction(nameof(Error), new { message = "Id not found" });
     }
 
     return View(seller);
@@ -88,13 +89,13 @@ public class SellersController : Controller
   {
     if (id == null)
     {
-      return NotFound();
+      return RedirectToAction(nameof(Error), new { message = "Id not provided" });
     }
 
     var seller = _sellerService.FindById(id.Value);
     if (seller == null)
     {
-      return NotFound();
+      return RedirectToAction(nameof(Error), new { message = "Id not found" });
     }
 
     List<Department> departments = _departmentService.FindAll();
@@ -114,23 +115,27 @@ public class SellersController : Controller
   {
     if (id != seller.Id)
     {
-      return BadRequest();
+      return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
     }
 
     try
     {
-
       _sellerService.Update(seller);
+      return RedirectToAction(nameof(Index));
     }
-    catch (NotFoundException)
+    catch (ApplicationException ex)
     {
-      return NotFound();
+      return RedirectToAction(nameof(Error), new { message = ex.Message });
     }
-    catch (DbConcurrencyException)
-    {
-      return BadRequest();
-    }
+  }
 
-    return RedirectToAction(nameof(Index));
+  public IActionResult Error(string message)
+  {
+    var viewModel = new ErrorViewModel
+    {
+      Message = message,
+      RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+    };
+    return View(viewModel);
   }
 }

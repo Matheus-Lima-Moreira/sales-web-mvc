@@ -8,6 +8,7 @@ public class Seller
   public double BaseSalary { get; set; }
   public DateTime BirthDate { get; set; }
   public Department Department { get; set; } = null!;
+  public int DepartmentId { get; set; }
   public ICollection<SalesRecord> Sales { get; set; } = [];
 
   public Seller()

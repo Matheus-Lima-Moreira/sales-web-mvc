@@ -17,7 +17,7 @@
         <label asp-for="Seller.Name" class="form-label"></label>
         <input asp-for="Seller.Name" class="form-control" />
       </div>
-      
+
       <div class="mb-3">
         <label asp-for="Seller.Email" class="form-label"></label>
         <input asp-for="Seller.Email" class="form-control" />
@@ -40,6 +40,8 @@
         </select>
       </div>
 
+      <div asp-validation-summary="All" class="text-danger"></div>
+
       <div class="mb-3">
         <input type="submit" value="Create" class="btn btn-outline-success" />
         <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
@@ -47,3 +49,9 @@
     </form>
   </div>
 </div>
+
+@section Scripts {
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
+}
